@@ -6,6 +6,43 @@
   let pageHTML = ''
   let $ = {}
 
+  marketplace['kabum'] = () => {
+    const isAvailable =
+      $('.disponibilidade').html().indexOf('disponibilidade_on') !== -1
+
+    let price = $('.box_preco .ParcelamentoCartao > div ul > li strong').html()
+
+    price = price
+      .substring(price.indexOf('R$ ') + 3, price.indexOf(' c/'))
+      .replace('.', '')
+      .replace(',', '.')
+
+    price = parseFloat(price)
+
+    return { isAvailable, price }
+  }
+
+  marketplace['amazon'] = () => {
+    const isAvailable =
+      $('#availability > span').html().indexOf('N&#xE3;o dispon&#xED;vel') ===
+      -1
+
+    if (!isAvailable) {
+      return { isAvailable }
+    }
+
+    let price = $('.priceBlockBuyingPriceString').html()
+
+    price = price
+      .substr(price.indexOf('R$') + 2)
+      .replace('.', '')
+      .replace(',', '.')
+
+    price = parseFloat(price)
+
+    return { isAvailable, price }
+  }
+
   const checkMarketplace = (url) => {
     const player = url.substring(url.indexOf('www.') + 4, url.indexOf('.com'))
 
